@@ -1,0 +1,23 @@
+{
+  "name": "mycelium-boardgame",
+  "version": "1.0.0",
+  "description": "Mycelium: Trotterized Spin Simulation Quantum Puzzle Game",
+  "type": "module",
+  "scripts": {
+    "start": "node preview-server.mjs",
+    "dev": "node preview-server.mjs",
+    "test": "node --test hams/dev/tests/engine/engine.test.mjs && node --test hams/dev/tests/ui/ui.test.mjs",
+    "test:engine": "node --test hams/dev/tests/engine/engine.test.mjs",
+    "test:ui": "node --test hams/dev/tests/ui/ui.test.mjs",
+    "lint": "node hams/dev/harness/lint_qollab.mjs"
+  },
+  "keywords": [
+    "quantum",
+    "qiskit",
+    "puzzle",
+    "trotterization",
+    "boardgame"
+  ],
+  "author": "",
+  "license": "MIT"
+}

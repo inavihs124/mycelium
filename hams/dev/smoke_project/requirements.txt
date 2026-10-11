@@ -1,0 +1,2 @@
+# Mycelium Smoke Test
+# No extra packages needed - Qiskit is auto-provided by Qollab

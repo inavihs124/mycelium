@@ -1,0 +1,628 @@
+<!-- 1. SLIM GLASS HEADER -->
+<header class="header" role="banner" aria-label="Mycelium — Quantum Puzzle Game">
+  <div class="header-left">
+    <div class="header-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" class="icon-spore" fill="none" aria-hidden="true">
+          <path d="M12 2C7.2 2 3.8 5.6 3.8 9.7C3.8 11.3 5.2 12.3 6.9 12.8L7.9 19.2C7.9 20.2 8.8 21 9.8 21H14.2C15.2 21 16.1 20.2 16.1 19.2L17.1 12.8C18.8 12.3 20.2 11.3 20.2 9.7C20.2 5.6 16.8 2 12 2Z" fill="#1FD1A5"/>
+          <circle cx="8.8" cy="6.4" r="1.3" fill="#E6FFFA"/>
+          <circle cx="15.2" cy="7.2" r="1.4" fill="#E6FFFA"/>
+          <circle cx="12" cy="9.8" r="1.1" fill="#C77DFF"/>
+        </svg>
+      </div>
+      <span class="game-title">Mycelium</span>
+    </div>
+    <div class="header-divider" aria-hidden="true"></div>
+    <div class="level-meta">
+      <span id="level-title" class="level-title" aria-live="polite">5-2: The Whole Tree</span>
+      <span class="param-chip" id="param-T" title="Total evolution time">
+        <span class="ping-dot" aria-hidden="true"></span> T=<strong id="val-T">—</strong>
+      </span>
+      <span class="param-chip param-chip-epoch" id="param-E" title="Epochs">E=<strong id="val-E">—</strong></span>
+      <span class="param-chip" id="param-p" title="Noise" hidden>p=<strong id="val-p">0</strong></span>
+    </div>
+    <div class="header-divider" aria-hidden="true"></div>
+    <div class="header-controls" role="toolbar" aria-label="Level controls">
+      <button id="btn-run" class="forest-btn btn-run" aria-label="Run schedule" disabled>
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <span>RUN PULSE</span>
+      </button>
+      <button id="btn-skip" class="forest-btn btn-ghost" aria-label="Skip step" title="Skip step">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+        <span>Skip</span>
+      </button>
+      <button id="btn-reset" class="forest-btn btn-ghost" aria-label="Reset to start state" title="Reset Simulation">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <span>Reset</span>
+      </button>
+      <div class="btn-group" role="group" aria-label="History controls">
+        <button id="btn-undo" class="forest-btn btn-icon-sm" aria-label="Undo" title="Ctrl+Z">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+        </button>
+        <div class="btn-divider" aria-hidden="true"></div>
+        <button id="btn-redo" class="forest-btn btn-icon-sm" aria-label="Redo" title="Ctrl+Y">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 10H11a8 8 0 00-8 8v2m18-10l-6 6m6-6l-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button id="btn-math" class="forest-btn btn-outline" aria-expanded="false" aria-controls="math-drawer">
+      <span class="math-sigma" aria-hidden="true">Σ</span>
+      <span>Show Math</span>
+    </button>
+    <button id="btn-theme" class="forest-btn btn-icon-sm" aria-label="Toggle theme" title="Toggle light/dark">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+    </button>
+    <button id="btn-motion" class="forest-btn btn-icon-sm" aria-label="Toggle animations" title="Reduce motion">
+      <span aria-hidden="true">⚡</span>
+    </button>
+    <div class="header-divider" aria-hidden="true"></div>
+    <div class="qubit-badge" aria-label="Quantum state ψ" title="Statevector space">ψ</div>
+  </div>
+</header>
+
+<!-- MYCELIUM GAME SHELL: title screen + chapter path -->
+<section id="myc-home" class="myc-screen myc-home" aria-label="Mycelium main menu" hidden>
+  <div class="myc-home-top">
+    <div class="myc-mark"><span class="myc-mark-cap"></span><span class="myc-mark-stem"></span></div>
+    <span class="myc-wordmark">mycelium<span>®</span></span>
+    <span class="myc-top-note">A tiny game about a very big universe</span>
+  </div>
+  <div class="myc-home-layout">
+    <div class="myc-home-copy">
+      <div class="myc-eyebrow"><i></i> THE QUANTUM FOREST IS AWAKE</div>
+      <h1>Grow a little.<br><em>Change the universe.</em></h1>
+      <p class="myc-intro">A cozy puzzle adventure where tiny spores help you untangle the rules of a quantum world.</p>
+      <div class="myc-home-actions">
+        <button class="myc-primary" data-myc-action="continue"><span class="myc-play-triangle">▶</span> Continue journey <span class="myc-arrow">↗</span></button>
+        <button class="myc-secondary" data-myc-action="new">Start a new journey</button>
+        <button class="myc-text-action" data-myc-action="levels">Pick a level <span>→</span></button>
+      </div>
+      <div class="myc-home-foot"><span class="myc-foot-dot"></span> 10 hand-crafted puzzles <b>·</b> no rush, just curiosity</div>
+    </div>
+    <div class="myc-home-art" aria-hidden="true">
+      <div class="myc-moon"></div><div class="myc-stars">✦　 ·　 ✧　　·　 ✦</div>
+      <svg class="myc-landscape" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="myc-sky-glow" x1="0" y1="0" x2="0.7" y2="1"><stop stop-color="#8575bd"/><stop offset=".48" stop-color="#424b75"/><stop offset="1" stop-color="#253c4c"/></linearGradient>
+          <radialGradient id="myc-lamp"><stop stop-color="#fff0b0" stop-opacity=".92"/><stop offset="1" stop-color="#ffd58d" stop-opacity="0"/></radialGradient>
+          <linearGradient id="myc-cap" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffcf9b"/><stop offset="1" stop-color="#d98291"/></linearGradient>
+          <linearGradient id="myc-cap-purple" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4b9ff"/><stop offset="1" stop-color="#9c84d7"/></linearGradient>
+          <filter id="myc-soft-glow"><feGaussianBlur stdDeviation="18"/></filter>
+        </defs>
+        <circle cx="545" cy="240" r="180" fill="#e9a9ce" opacity=".12" filter="url(#myc-soft-glow)"/>
+        <path d="M0 435 Q145 340 276 404 T555 382 T900 360 L900 680 L0 680Z" fill="#344d5d"/>
+        <path d="M0 500 Q150 410 330 478 T640 430 T900 455 L900 680 L0 680Z" fill="#263d43"/>
+        <path d="M0 570 Q180 490 340 543 T640 520 T900 515 L900 680 L0 680Z" fill="#1c3136"/>
+        <path d="M90 680 Q230 550 405 585 Q535 610 670 680Z" fill="#41524f" opacity=".8"/>
+        <!-- tiny floating spores -->
+        <g fill="#ffdda0"><circle cx="182" cy="216" r="3"/><circle cx="281" cy="316" r="2"/><circle cx="675" cy="224" r="3"/><circle cx="751" cy="364" r="2"/><circle cx="510" cy="92" r="2.5"/></g>
+        <!-- giant lavender mushroom -->
+        <ellipse cx="646" cy="454" rx="148" ry="20" fill="#101f2d" opacity=".28"/>
+        <path d="M602 452 C609 410 613 358 621 321 C629 294 667 294 677 323 C684 366 682 410 696 452Z" fill="#f2d5cb"/>
+        <path d="M475 324 C478 251 550 198 642 201 C744 200 803 260 805 324 C769 352 708 366 638 364 C569 365 508 350 475 324Z" fill="url(#myc-cap-purple)"/>
+        <path d="M493 319 Q635 354 785 319" fill="none" stroke="#ffe5ff" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+        <g fill="#fff0f6" opacity=".85"><ellipse cx="560" cy="270" rx="8" ry="12"/><ellipse cx="628" cy="239" rx="7" ry="10"/><ellipse cx="703" cy="273" rx="9" ry="12"/><ellipse cx="748" cy="304" rx="6" ry="8"/></g>
+        <!-- peach mushroom -->
+        <path d="M252 505 C258 468 260 437 271 417 C283 401 305 408 310 428 C314 453 312 480 322 505Z" fill="#ecd9c0"/>
+        <path d="M207 423 C211 386 251 361 285 364 C328 365 359 389 361 424 C319 444 246 447 207 423Z" fill="url(#myc-cap)"/>
+        <path d="M222 421 Q281 437 347 421" fill="none" stroke="#ffe0b5" stroke-width="5"/>
+        <g fill="#fff0d5"><circle cx="245" cy="400" r="4"/><circle cx="279" cy="383" r="5"/><circle cx="316" cy="401" r="4"/></g>
+        <!-- small mint mushrooms -->
+        <path d="M761 549 L775 482 Q784 461 794 483 L808 549Z" fill="#cfe9c4"/><path d="M731 485 Q733 452 775 448 Q812 452 819 485 Q777 502 731 485Z" fill="#9dceac"/><circle cx="763" cy="471" r="4" fill="#f7ffdc"/><circle cx="792" cy="464" r="4" fill="#f7ffdc"/>
+        <path d="M145 582 L157 535 Q165 517 175 538 L189 582Z" fill="#cfe1ee"/><path d="M118 539 Q123 509 159 508 Q195 510 203 540 Q164 555 118 539Z" fill="#93c5cf"/><circle cx="148" cy="523" r="3" fill="#f7ffdc"/><circle cx="170" cy="520" r="3" fill="#f7ffdc"/>
+        <!-- rounded explorer mascot -->
+        <ellipse cx="435" cy="586" rx="60" ry="14" fill="#0d202b" opacity=".33"/>
+        <path d="M394 575 Q380 544 394 511 Q409 483 439 489 Q475 493 483 529 L474 574Z" fill="#f1b18e"/>
+        <path d="M387 526 Q379 490 413 474 Q442 463 466 489 L474 523 Q443 511 420 527Z" fill="#c87981"/>
+        <path d="M390 511 Q396 477 428 468 Q454 465 476 493 Q438 495 405 520Z" fill="#e59e9a"/>
+        <circle cx="418" cy="535" r="4.5" fill="#2b3647"/><circle cx="448" cy="535" r="4.5" fill="#2b3647"/><path d="M421 549 Q433 561 445 549" fill="none" stroke="#2b3647" stroke-width="3" stroke-linecap="round"/>
+        <path d="M396 567 Q379 580 385 592 Q396 600 410 579" fill="#f1b18e"/><path d="M464 571 Q481 579 483 592 Q472 602 459 580" fill="#f1b18e"/>
+        <!-- little flowers/grass -->
+        <g stroke="#7fb79c" stroke-width="4" stroke-linecap="round"><path d="M80 626l-6 -26m6 26l13 -20m-13 20l-16 -10"/><path d="M690 627l-4 -30m4 30l15 -19m-15 19l-16 -11"/><path d="M550 636l-2 -20m2 20l12 -14"/></g>
+        <g fill="#ffcf93"><circle cx="74" cy="596" r="6"/><circle cx="94" cy="604" r="5"/><circle cx="686" cy="590" r="5"/><circle cx="702" cy="598" r="6"/></g>
+      </svg>
+      <div class="myc-art-caption"><span class="myc-caption-icon">✦</span><span>The forest remembers every path you grow.</span></div>
+    </div>
+  </div>
+  <div class="myc-home-bottom"><span>MYCELIUM / FIELD NOTES 001</span><span>MADE OF MATH & A LITTLE MAGIC</span></div>
+</section>
+
+<section id="myc-map" class="myc-screen myc-map" aria-label="Choose a chapter" hidden>
+  <header class="myc-map-header">
+    <button class="myc-back" data-myc-action="home">← <span>Home</span></button>
+    <div class="myc-map-brand"><span class="myc-mini-mushroom">✿</span> Mycelium</div>
+    <div class="myc-map-progress"><span class="myc-progress-seed">✦</span><span>YOUR LITTLE JOURNEY</span><b id="myc-progress-count">0 / 10</b></div>
+  </header>
+  <div class="myc-map-heading"><span class="myc-eyebrow"><i></i> PICK YOUR NEXT ADVENTURE</span><h1>The forest<br><em>is yours.</em></h1><p>Every mushroom has a puzzle inside.<br>Start small and see where the roots take you.</p></div>
+  <div class="myc-chapter-grid">
+    <article class="myc-chapter myc-chapter-one"><div class="myc-chapter-illustration"><span class="myc-orb orb-a"></span><span class="myc-orb orb-b"></span><span class="myc-level-mushroom">🍄</span><span class="myc-firefly ff-a">✦</span><span class="myc-firefly ff-b">✧</span></div><div class="myc-chapter-meta"><span>CHAPTER 01</span><span class="myc-chapter-state">START HERE</span></div><h2>Foundations</h2><p>Wake up your first filaments.</p><div class="myc-level-row"><button data-myc-level="1-1" class="myc-level-node active"><small>01</small><span>First Filament</span><b>→</b></button><button data-myc-level="1-2" class="myc-level-node"><small>02</small><span>Two-Bond Path</span><b>→</b></button><button data-myc-level="1-3" class="myc-level-node"><small>03</small><span>Branch Point</span><b>→</b></button></div></article>
+    <article class="myc-chapter myc-chapter-two"><div class="myc-chapter-illustration"><span class="myc-orb orb-a"></span><span class="myc-level-mushroom">🌙</span><span class="myc-firefly ff-a">✦</span><span class="myc-firefly ff-b">✧</span></div><div class="myc-chapter-meta"><span>CHAPTER 02</span><span>3 PUZZLES</span></div><h2>Time garden</h2><p>Repeat a pattern. Watch it bloom.</p><div class="myc-level-row"><button data-myc-level="2-1" class="myc-level-node"><small>04</small><span>Repeated Epochs</span><b>→</b></button><button data-myc-level="2-2" class="myc-level-node"><small>05</small><span>Second Order</span><b>→</b></button><button data-myc-level="2-3" class="myc-level-node"><small>06</small><span>Full Network</span><b>→</b></button></div></article>
+    <article class="myc-chapter myc-chapter-three"><div class="myc-chapter-illustration"><span class="myc-orb orb-a"></span><span class="myc-level-mushroom">🫧</span><span class="myc-firefly ff-a">✦</span><span class="myc-firefly ff-b">✧</span></div><div class="myc-chapter-meta"><span>CHAPTER 03</span><span>2 PUZZLES</span></div><h2>Quiet spores</h2><p>Find your way through the noise.</p><div class="myc-level-row"><button data-myc-level="3-1" class="myc-level-node"><small>07</small><span>First Spores</span><b>→</b></button><button data-myc-level="3-2" class="myc-level-node"><small>08</small><span>Noisy Full Network</span><b>→</b></button></div></article>
+    <article class="myc-chapter myc-chapter-four"><div class="myc-chapter-illustration"><span class="myc-orb orb-a"></span><span class="myc-level-mushroom">⭐</span><span class="myc-firefly ff-a">✦</span><span class="myc-firefly ff-b">✧</span></div><div class="myc-chapter-meta"><span>CHAPTER 04</span><span>2 PUZZLES</span></div><h2>Little big brain</h2><p>Make every operation count.</p><div class="myc-level-row"><button data-myc-level="4-1" class="myc-level-node"><small>09</small><span>Frugal Filaments</span><b>→</b></button><button data-myc-level="4-2" class="myc-level-node"><small>10</small><span>Budget Sprint</span><b>→</b></button></div></article>
+  </div>
+  <div class="myc-map-footer"><span>TAKE YOUR TIME. EXPERIMENT. GROW.</span><button data-myc-action="continue">Back to your journey ↗</button></div>
+</section>
+
+<button id="myc-back-to-map" class="myc-game-back" type="button" aria-label="Return to chapter map">← <span>Forest map</span></button>
+
+<div id="aria-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<!-- MAIN WORKSPACE -->
+<main class="main-layout" role="main">
+
+  <!-- 2. THE PANORAMA (52% Height, Continuous Alien Moon Jungle) -->
+  <section class="panorama-section" aria-label="Panoramic Quantum Forest">
+    <!-- Background SVG Backdrop (Starfield, Gas Giant, Rings, Moons, Levitating Islands, God Rays, Soil line) -->
+    <svg id="panorama-backdrop" class="panorama-backdrop" viewBox="0 0 1920 540" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="forestSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#24283f"/><stop offset=".48" stop-color="#35465a"/><stop offset="1" stop-color="#294747"/>
+        </linearGradient>
+        <linearGradient id="forestFall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b7e8db" stop-opacity=".55"/><stop offset="1" stop-color="#8dd7dc" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="forestDawn" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stop-color="#e9c3da" stop-opacity=".24"/><stop offset="1" stop-color="#e9c3da" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="forestGround" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#294644"/><stop offset="1" stop-color="#192f32"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="540" fill="url(#forestSky)"/>
+      <circle cx="990" cy="135" r="310" fill="url(#forestDawn)"/>
+      <!-- Small moon and quiet star field -->
+      <path d="M1570 66 A34 34 0 1 0 1605 114 A27 27 0 0 1 1570 66Z" fill="#f8e7bb" opacity=".88"/>
+      <g fill="#f5ead5" opacity=".62">
+        <circle cx="90" cy="68" r="1.8"/><circle cx="205" cy="115" r="1.3"/><circle cx="345" cy="52" r="1.4"/><circle cx="470" cy="96" r="1.7"/>
+        <circle cx="630" cy="45" r="1.2"/><circle cx="735" cy="105" r="1.3"/><circle cx="875" cy="63" r="1.7"/><circle cx="1080" cy="42" r="1.3"/>
+        <circle cx="1208" cy="95" r="1.5"/><circle cx="1390" cy="48" r="1.4"/><circle cx="1715" cy="82" r="1.4"/><circle cx="1845" cy="138" r="1.5"/>
+      </g>
+      <!-- distant layered hills -->
+      <path d="M0 318 Q110 260 225 298 T455 292 T690 304 T940 260 T1190 300 T1440 277 T1690 293 T1920 255 L1920 540 L0 540Z" fill="#2b3e50"/>
+      <path d="M0 365 Q150 310 285 336 T520 333 T760 351 T1020 314 T1260 346 T1500 323 T1735 343 T1920 318 L1920 540 L0 540Z" fill="#253f45"/>
+      <!-- far forest silhouette -->
+      <g fill="#1f343b" opacity=".9">
+        <path d="M0 360 L0 255 36 292 67 222 103 292 132 249 160 360Z"/><path d="M174 358 L195 275 224 304 252 230 279 296 309 269 337 359Z"/>
+        <path d="M365 359 L394 281 423 310 451 220 478 301 512 260 545 359Z"/><path d="M1395 359 L1425 275 1456 309 1487 228 1518 303 1544 267 1578 359Z"/>
+        <path d="M1630 359 L1660 282 1688 308 1719 215 1749 304 1779 264 1812 359Z"/><path d="M1810 359 L1844 268 1870 300 1896 240 1920 290 1920 360Z"/>
+      </g>
+      <!-- soft waterfalls in the distance -->
+      <g opacity=".78">
+        <path d="M420 300 Q430 330 424 408 L409 408 Q419 349 410 300Z" fill="url(#forestFall)"/>
+        <path d="M1435 292 Q1447 332 1440 426 L1422 426 Q1432 342 1424 292Z" fill="url(#forestFall)"/>
+        <path d="M1460 306 Q1468 346 1460 399" stroke="#bee8df" stroke-opacity=".35" stroke-width="3" fill="none"/>
+      </g>
+      <!-- lanterns hanging from branches -->
+      <g stroke="#172b31" stroke-width="4" fill="none"><path d="M88 0 Q65 56 99 85"/><path d="M1802 0 Q1830 42 1809 76"/><path d="M1710 0 Q1688 38 1708 61"/></g>
+      <g>
+        <rect x="88" y="78" width="17" height="26" rx="5" fill="#efc989"/><rect x="1801" y="69" width="17" height="25" rx="5" fill="#efc989"/><rect x="1701" y="55" width="15" height="23" rx="5" fill="#efc989"/>
+        <circle cx="96" cy="91" r="25" fill="#ffd99b" opacity=".12"/><circle cx="1809" cy="81" r="24" fill="#ffd99b" opacity=".12"/><circle cx="1708" cy="66" r="21" fill="#ffd99b" opacity=".1"/>
+      </g>
+      <!-- ground and foreground leaf silhouettes -->
+      <path d="M0 426 Q250 395 480 421 T930 409 T1390 421 T1920 400 L1920 540 L0 540Z" fill="url(#forestGround)"/>
+      <path d="M0 461 Q230 439 470 459 T960 450 T1450 461 T1920 445" stroke="#8cbba0" stroke-opacity=".45" stroke-width="2" fill="none"/>
+      <g fill="#172d31">
+        <path d="M0 540 L0 455 Q25 466 35 500 Q58 464 74 472 Q80 508 58 540Z"/><path d="M60 540 Q74 498 106 486 Q99 521 124 540Z"/>
+        <path d="M1790 540 Q1810 481 1840 474 Q1831 514 1867 540Z"/><path d="M1852 540 Q1875 500 1920 480 L1920 540Z"/>
+        <path d="M225 540 Q245 511 269 518 Q258 535 280 540Z"/><path d="M1510 540 Q1538 503 1561 516 Q1555 534 1578 540Z"/>
+      </g>
+      <!-- decorative ground mushrooms, deliberately small -->
+      <g opacity=".85">
+        <path d="M250 540 L252 515 Q258 502 265 516 L269 540Z" fill="#e5d5bd"/><path d="M235 516 Q239 497 258 497 Q278 498 282 516 Q260 525 235 516Z" fill="#c98b8f"/>
+        <path d="M1605 540 L1609 517 Q1616 505 1623 518 L1628 540Z" fill="#e5d5bd"/><path d="M1591 519 Q1595 498 1615 498 Q1635 500 1639 519 Q1614 528 1591 519Z" fill="#d2b17a"/>
+        <path d="M186 540 L188 525 Q195 513 202 526 L205 540Z" fill="#cfe3d0"/><path d="M177 526 Q181 510 196 510 Q211 511 215 526 Q196 532 177 526Z" fill="#93bc9f"/>
+      </g>
+    </svg>
+
+    <!-- Canvas for floating bioluminescent spores -->
+    <canvas id="particle-canvas" class="particle-canvas" width="1920" height="540" aria-hidden="true"></canvas>
+
+    <!-- 7 Colossal Trees & Filaments SVG -->
+    <svg id="panorama-forest" class="panorama-forest" viewBox="0 0 1920 540" preserveAspectRatio="none" role="img" aria-label="Quantum forest panoramic state">
+      <title>Quantum Forest State</title>
+      <desc>Panoramic spin network: 7 colossal trees displaying excitation probability, phase quadrant markers, purity rings, and drift halos</desc>
+      <defs id="forest-defs">
+        <radialGradient id="spiritOverlay" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stop-color="#e6f0ff" stop-opacity="0.75"/>
+          <stop offset="50%" stop-color="#9cc7ff" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#9cc7ff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hub3Core" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="25%" stop-color="#4de3ff"/>
+          <stop offset="60%" stop-color="#c77dff"/>
+          <stop offset="100%" stop-color="#050a0f" stop-opacity="0.2"/>
+        </radialGradient>
+        <radialGradient id="hub1Core" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="30%" stop-color="#1fd1a5"/>
+          <stop offset="70%" stop-color="#0f4c5c"/>
+          <stop offset="100%" stop-color="#050a0f" stop-opacity="0.3"/>
+        </radialGradient>
+
+        <!-- Reusable instanced filaments for high performance (<use>) -->
+        <g id="filament-cluster-0">
+          <path d="M-22,-5 Q-28,35 -20,60 M-12,0 Q-16,45 -10,80 M-2,3 Q-3,50 -1,90 M8,1 Q12,45 9,83 M18,-3 Q26,40 18,65" stroke="#1fd1a5" stroke-width="1.2" fill="none" opacity="0.75"/>
+        </g>
+        <g id="filament-cluster-1">
+          <path d="M-55,5 Q-65,65 -45,125 M-30,15 Q-38,95 -24,170 M-6,25 Q-6,115 -3,200 M6,25 Q6,115 3,200 M30,15 Q38,95 24,170 M55,5 Q65,65 45,125" stroke="#4de3ff" stroke-width="1.4" fill="none" opacity="0.9"/>
+        </g>
+        <g id="filament-cluster-3">
+          <path d="M-78,10 Q-92,85 -65,165 M-46,20 Q-54,115 -32,215 M-14,30 Q-14,145 -8,260 M0,33 Q0,155 0,270 M14,30 Q14,145 8,260 M46,20 Q54,115 32,215 M78,10 Q92,85 65,165" stroke="#4de3ff" stroke-width="1.8" fill="none" opacity="0.95" class="glow-cyan"/>
+        </g>
+      </defs>
+
+      <!-- Ridge ferns & flora -->
+      <g id="forest-flora" stroke="#1fd1a5" fill="none" opacity="0.75">
+        <path d="M330,458 Q345,430 360,436" stroke-width="2" stroke="#4de3ff"/>
+        <circle cx="350" cy="445" r="2.5" fill="#c77dff"/>
+        <path d="M890,454 Q910,420 930,428" stroke-width="2.5" stroke="#4de3ff"/>
+        <circle cx="915" cy="435" r="3.5" fill="#4de3ff" class="glow-cyan"/>
+        <circle cx="1005" cy="436" r="3.5" fill="#c77dff" class="glow-violet"/>
+        <path d="M1230,458 Q1245,435 1260,440" stroke-width="2"/>
+      </g>
+
+      <!-- Trees container -->
+      <g id="forest-trees" class="forest-trees">
+        <!-- Rendered dynamically by render.js -->
+      </g>
+    </svg>
+
+    <!-- IN-SCENE HUD BADGE (Top-Left) -->
+    <div class="hud-badge glass-panel" aria-label="Simulation Metrics HUD">
+      <span class="hud-dot" aria-hidden="true"></span>
+      <span class="hud-text font-mono-num">
+        t <strong id="hud-t" class="hud-val-cyan">0.00</strong> / <span id="hud-T">1.00</span>
+        <span class="hud-sep" aria-hidden="true">·</span>
+        error <strong id="hud-err" class="hud-val-teal">—</strong>
+        <span class="hud-sep" aria-hidden="true">·</span>
+        fidelity <strong id="hud-fid" class="hud-val-cyan">—</strong>
+        <span class="hud-sep" aria-hidden="true">·</span>
+        ≈<span id="hud-cx">99</span> CX
+        <span class="hud-sep" aria-hidden="true">·</span>
+        depth <strong id="hud-depth">0</strong>
+      </span>
+    </div>
+
+    <!-- VIEW SWITCHER (Top-Right) -->
+    <div class="view-switcher glass-panel" role="radiogroup" aria-label="Scene view mode">
+      <button id="view-machine" class="view-btn forest-btn" role="radio" aria-checked="false" data-view="machine">Machine</button>
+      <button id="view-ghost" class="view-btn forest-btn" role="radio" aria-checked="false" data-view="ghost">Ghost</button>
+      <button id="view-both" class="view-btn forest-btn active" role="radio" aria-checked="true" data-view="both">
+        <span class="ping-dot" aria-hidden="true"></span> Both (Active)
+      </button>
+      <button id="view-drift" class="view-btn forest-btn" role="radio" aria-checked="false" data-view="drift">Drift</button>
+    </div>
+
+    <!-- Floating Phase Markers & Deltas Overlay -->
+    <div id="tree-markers-overlay" class="tree-markers-overlay" aria-hidden="true">
+      <!-- Populated dynamically per tree -->
+    </div>
+
+    <!-- Name Plaques on Soil Line -->
+    <div id="tree-plaques" class="tree-plaques" role="region" aria-label="Tree state plaques">
+      <!-- Populated dynamically with Tree 0..Tree 6 P1 and ghost values -->
+    </div>
+
+    <!-- Collapsible Data Drawer (Data tables) -->
+    <details id="data-drawer" class="data-drawer glass-panel" aria-label="Data tables drawer">
+      <summary class="data-drawer-summary" aria-label="Toggle simulation data tables">
+        <span>📊 Data Tables</span>
+        <span class="drawer-arrow" aria-hidden="true">▾</span>
+      </summary>
+      <div class="data-tables-row">
+        <div class="data-table-card">
+          <h3>Your Machine State</h3>
+          <table id="table-machine" class="data-table" aria-label="Machine state data"></table>
+        </div>
+        <div class="data-table-card">
+          <h3>Ghost (Exact) State</h3>
+          <table id="table-ghost" class="data-table" aria-label="Ghost state data"></table>
+        </div>
+        <div class="data-table-card">
+          <h3>Drift (|ΔP₁|)</h3>
+          <table id="table-drift" class="data-table" aria-label="Drift data"></table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 4. UNDERGROUND CAVERN (34% Height) & 5. RIGHT DOCK -->
+  <section class="cavern-section" aria-label="Underground Root Cavern and Schedule Sequencer">
+    <div class="cavern-workspace">
+      
+      <!-- LEFT RAIL -->
+      <aside class="left-rail glass-card" aria-label="Sequencer tools and palette">
+        <div class="rail-group">
+          <div class="rail-header">
+            <span>Epoch Discs</span>
+            <span class="rail-sub font-mono-num">E1..E8</span>
+          </div>
+          <div class="epoch-tabs" id="epoch-tabs" role="tablist" aria-label="Epochs">
+            <!-- Populated by sequencer.js -->
+          </div>
+        </div>
+
+        <div class="rail-group">
+          <div class="rail-header">
+            <span>Spore Slice Tiles</span>
+          </div>
+          <div class="palette" role="toolbar" aria-label="Slice palette">
+            <button class="palette-btn forest-btn" data-fraction="1" aria-label="Full slice (1)" aria-pressed="true">
+              <span class="pod-badge">1</span>
+              <span class="pod-name">Whole</span>
+              <span class="pod-frac font-mono-num">1.0</span>
+            </button>
+            <button class="palette-btn forest-btn" data-fraction="0.5" aria-label="Half slice (½)" aria-pressed="false">
+              <span class="pod-badge">½</span>
+              <span class="pod-name">Half</span>
+              <span class="pod-frac font-mono-num">0.5</span>
+            </button>
+            <button class="palette-btn forest-btn" data-fraction="0.25" aria-label="Quarter slice (¼)" aria-pressed="false">
+              <span class="pod-badge">¼</span>
+              <span class="pod-name">Quarter</span>
+              <span class="pod-frac font-mono-num">0.25</span>
+            </button>
+            <button class="palette-btn forest-btn" data-fraction="0.125" aria-label="Eighth slice (⅛)" aria-pressed="false">
+              <span class="pod-badge">⅛</span>
+              <span class="pod-name">Eighth</span>
+              <span class="pod-frac font-mono-num">0.125</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="rail-footer">
+          <button id="btn-macro" class="forest-btn btn-macro" aria-label="Set macro repeat">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+            <span>Repeat Macro</span>
+          </button>
+          <div class="macro-hint font-mono-num">Graft E1 → E2..E8</div>
+        </div>
+      </aside>
+
+      <!-- CENTER WORKSPACE: Mini Topology + Root Lanes (Sequencer Grid) -->
+      <div class="sequencer-center glass-card">
+        <!-- TOPOLOGY BAR -->
+        <div class="topology-bar" aria-label="Spin Network Graph">
+          <div class="topo-left">
+            <span class="topo-label">Network Graph:</span>
+            <svg class="topo-svg" viewBox="0 0 260 20" aria-label="Spin network coupling diagram">
+              <line x1="15" y1="10" x2="50" y2="10" stroke="#1fd1a5" stroke-width="2.5"/>
+              <line x1="50" y1="10" x2="85" y2="10" stroke="#1fd1a5" stroke-width="2"/>
+              <line x1="50" y1="10" x2="130" y2="10" stroke="#4de3ff" stroke-width="2.5" stroke-dasharray="3 2"/>
+              <line x1="130" y1="10" x2="170" y2="10" stroke="#1fd1a5" stroke-width="1.8"/>
+              <line x1="130" y1="10" x2="210" y2="10" stroke="#1fd1a5" stroke-width="1.8"/>
+              <line x1="210" y1="10" x2="245" y2="10" stroke="#1fd1a5" stroke-width="1.5"/>
+              <circle cx="15" cy="10" r="3.5" fill="#1fd1a5"/>
+              <circle cx="50" cy="10" r="4.5" fill="#4de3ff" stroke="#fff" stroke-width="1"/>
+              <circle cx="85" cy="10" r="3.5" fill="#1fd1a5"/>
+              <circle cx="130" cy="10" r="5.5" fill="#c77dff" stroke="#fff" stroke-width="1"/>
+              <circle cx="170" cy="10" r="3.5" fill="#1fd1a5"/>
+              <circle cx="210" cy="10" r="4.5" fill="#4de3ff"/>
+              <circle cx="245" cy="10" r="3" fill="#1fd1a5"/>
+            </svg>
+          </div>
+          <div class="topo-right font-mono-num">
+            <span class="topo-chip chip-cyan">
+              <span class="dot-cyan" aria-hidden="true"></span> Entanglement links: I 0.77
+            </span>
+            <span class="topo-chip chip-orange">
+              <span>⚡</span> Vertex Safety: 0 Conflicts
+            </span>
+          </div>
+        </div>
+
+        <!-- TIME STRATA HEADER (T1..T8) -->
+        <div id="sequencer-time-header" class="sequencer-time-header" aria-hidden="true">
+          <!-- Populated by sequencer.js -->
+        </div>
+
+        <!-- 6 ROOT LANES SEQUENCER GRID -->
+        <div id="sequencer-grid" class="sequencer-grid" role="grid" aria-label="Schedule grid">
+          <!-- Populated by sequencer.js -->
+        </div>
+
+        <!-- SUBTERRANEAN STATUS BAR -->
+        <div class="sequencer-footer font-mono-num">
+          <div class="budget-status" id="budget-status" aria-live="polite">
+            <!-- Populated by sequencer.js -->
+          </div>
+          <div class="invariance-badge">
+            <span class="ping-dot" aria-hidden="true"></span> Full Mirrored Invariance
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. RIGHT DOCK -->
+    <aside class="right-dock glass-panel" aria-label="Scores, metrics and quantum verification">
+      <!-- CARD 1: SCORE & OBJECTIVES -->
+      <div class="dock-card glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span aria-hidden="true">✨</span>
+            <h2>Score & Forest Health</h2>
+          </div>
+          <div id="par-achieved-badge" class="badge-par">
+            <span>🍄</span> <span>Par Achieved</span>
+          </div>
+        </div>
+
+        <div class="score-grid">
+          <div class="score-tile">
+            <div class="score-tile-top">
+              <span class="tile-label">🌱 Slices:</span>
+              <span class="score-value font-mono-num" id="val-cost">0</span>
+            </div>
+            <div class="score-bar-track" role="meter" aria-label="Cost" aria-valuenow="0">
+              <div class="score-bar-fill fill-cost" id="bar-cost"></div>
+              <div class="par-marker" id="par-cost" title="Par"></div>
+              <div class="cap-marker" id="cap-cost" title="Cap" hidden></div>
+            </div>
+          </div>
+          <div class="score-tile">
+            <div class="score-tile-top">
+              <span class="tile-label">🪵 Depth:</span>
+              <span class="score-value font-mono-num" id="val-depth">0</span>
+            </div>
+            <div class="score-bar-track" role="meter" aria-label="Depth" aria-valuenow="0">
+              <div class="score-bar-fill fill-depth" id="bar-depth"></div>
+              <div class="par-marker" id="par-depth" title="Par"></div>
+              <div class="cap-marker" id="cap-depth" title="Cap" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaf-Wilt Error -->
+        <div class="leaf-wilt-card">
+          <div class="leaf-wilt-top">
+            <span class="leaf-wilt-label">
+              <span aria-hidden="true">🍃</span> Leaf-Wilt Error:
+            </span>
+            <span class="score-value font-mono-num glow-teal" id="val-error">—</span>
+          </div>
+          <div class="score-bar-track track-error" role="meter" aria-label="Error" aria-valuenow="0">
+            <div class="score-bar-fill fill-error" id="bar-error"></div>
+            <div class="par-marker" id="par-error" title="Par"></div>
+            <div class="ceiling-marker" id="ceiling-error" title="Ceiling (must be below)"></div>
+          </div>
+          <div class="leaf-wilt-footer font-mono-num">
+            <span class="leaf-status-text" id="leaf-status-text">Lush & Thriving</span>
+            <span class="goal-text" id="goal-ceiling-text">Goal: &lt; 0.0500</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: ERROR TRAIL CHECKPOINTS -->
+      <div class="dock-card glass-card flex-1">
+        <div class="card-header">
+          <div class="card-title">
+            <span aria-hidden="true">📈</span>
+            <h2>Error Trail Checkpoints</h2>
+          </div>
+          <span class="trail-count-badge font-mono-num" id="trail-count-badge">8 Checks</span>
+        </div>
+        <div class="trail-chart-container">
+          <svg id="trail-chart" class="trail-chart" role="img" aria-label="Error at each epoch checkpoint">
+            <title>Per-epoch error trail</title>
+          </svg>
+        </div>
+        <div class="trail-metrics font-mono-num">
+          <span>Fidelity: <strong id="val-fidelity" class="text-cyan">99.99%</strong></span>
+          <span class="text-muted">Current Err: <strong id="val-trail-err" class="text-teal">0.0114</strong></span>
+        </div>
+      </div>
+
+      <!-- CARD 3: QUANTUM CHECK -->
+      <div class="dock-card glass-card card-qcheck" id="quantum-check-section">
+        <div class="card-header">
+          <div class="card-title text-amber">
+            <span aria-hidden="true">🏮</span>
+            <h2>Quantum Check</h2>
+          </div>
+          <div class="badge-verified" id="verified-badge" hidden>
+            <span>✓</span> <span>VERIFIED</span>
+          </div>
+        </div>
+        <div class="qcheck-grid">
+          <div class="qcheck-field">
+            <label for="qc-tier" class="qcheck-label">Hardware Tier</label>
+            <select id="qc-tier" class="qcheck-select" aria-label="Verification tier">
+              <option value="small" selected>Small (2 circuits)</option>
+              <option value="medium">Medium (≤8 circuits)</option>
+            </select>
+          </div>
+          <div class="qcheck-field">
+            <label for="qc-shots" class="qcheck-label">Shot Count</label>
+            <select id="qc-shots" class="qcheck-select font-mono-num" aria-label="Shots count">
+              <option value="512">512 shots</option>
+              <option value="1024" selected>1024 shots</option>
+              <option value="2048">2048 shots</option>
+            </select>
+          </div>
+        </div>
+        <button id="btn-qcheck" class="forest-btn btn-qcheck" aria-label="Run Quantum Check on hardware backend">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(30 12 12)"/>
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(90 12 12)"/>
+            <ellipse cx="12" cy="12" rx="9" ry="3.5" transform="rotate(150 12 12)"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+          <span>Run Quantum Check</span>
+        </button>
+        <div id="qc-status" class="qc-status" aria-live="polite"></div>
+        <div id="qc-results" class="qc-results" hidden></div>
+        <p class="qc-note" id="qc-one-job-note" hidden>
+          To check again, press <strong>Stop</strong> then <strong>Run</strong>
+          (IonQ backends allow one job per run).
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- 6. BOTTOM STRIP: CARVED WOODEN ROOT PLANK -->
+  <footer class="root-plank-footer" role="contentinfo" aria-label="Solution Code Plank">
+    <div class="plank-left">
+      <div class="plank-label">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        <span>Carved Plank:</span>
+      </div>
+      <div class="plank-input-wrap">
+        <label for="paste-code-input" class="sr-only">Paste solution code</label>
+        <input 
+          id="paste-code-input" 
+          type="text" 
+          placeholder="Paste solution code (e.g., trotter_step(5-2, [J01_0.5, J34_0.5, J56_0.5], order=2)...)" 
+          aria-label="Paste solution code"
+          class="plank-input font-mono-num"
+        />
+      </div>
+      <button id="btn-paste-code" class="forest-btn btn-plank">
+        <span>Load Plank</span> <span aria-hidden="true">↑</span>
+      </button>
+    </div>
+    <div class="plank-schema-meta font-mono-num">
+      JSON / Trotter DSL Schema v1.4
+    </div>
+  </footer>
+
+</main>
+
+<!-- Math Drawer -->
+<aside id="math-drawer" class="math-drawer glass-panel" hidden aria-label="Mathematical details" role="complementary">
+  <button class="drawer-close" id="btn-math-close" aria-label="Close math drawer">✕</button>
+  <h2>The Physics</h2>
+  <div id="math-content" class="math-content"></div>
+</aside>
+
+<!-- Result Overlay -->
+<div id="result-overlay" class="result-overlay" hidden role="dialog" aria-modal="true" aria-label="Level result">
+  <div class="result-card glass-panel">
+    <h2 id="result-title" class="result-title"></h2>
+    <div class="result-scores font-mono-num" id="result-scores"></div>
+    <div class="result-actions">
+      <button id="btn-copy-code" class="forest-btn btn-run">Copy Solution Code</button>
+      <button id="btn-next-level" class="forest-btn btn-outline">Next Level →</button>
+      <button id="btn-optimize" class="forest-btn btn-ghost">Optimize</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help dialog -->
+<dialog id="help-dialog" class="help-dialog glass-panel" aria-label="Keyboard shortcuts">
+  <h2>Keyboard Controls</h2>
+  <table class="help-table">
+    <tr><td><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd>/<kbd>4</kbd></td><td>Place slice (1, ½, ¼, ⅛)</td></tr>
+    <tr><td><kbd>Delete</kbd></td><td>Remove slice under cursor</td></tr>
+    <tr><td><kbd>Arrow keys</kbd></td><td>Move cursor</td></tr>
+    <tr><td><kbd>Z</kbd></td><td>Undo</td></tr>
+    <tr><td><kbd>Y</kbd></td><td>Redo</td></tr>
+    <tr><td><kbd>R</kbd></td><td>Run</td></tr>
+    <tr><td><kbd>M</kbd></td><td>Set macro</td></tr>
+    <tr><td><kbd>?</kbd></td><td>This help</td></tr>
+  </table>
+  <button id="btn-help-close" class="forest-btn btn-run" autofocus>Close</button>
+</dialog>
